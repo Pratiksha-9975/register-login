@@ -2,26 +2,15 @@ import { NextResponse } from "next/server";
 import User from "../models/user";
 import connectDB from "../lib/db";
 
-const ADMIN_CREDENTIALS = { email: "admin@gmail.com", name:"admin"}; // Updated for clarity
+const ADMIN_CREDENTIALS = { email: "admin@gmail.com", name:"Admin@21"}; // Updated for clarity
 
-export async function PUT(request) {
+export async function POST(request) {
   try {
     await connectDB(); // Ensure database connection
 
     const { email, name, action, userId } = await request.json();
     console.log(email,name,action,userId);
     
-
-    // Validate admin credentials
-    if (
-      email !== ADMIN_CREDENTIALS.email ||
-      name !== ADMIN_CREDENTIALS.name
-    ) {
-      return NextResponse.json(
-        { message: "Invalid admin credentials" },
-        { status: 403 }
-      );
-    }
 
     // Validate action
     if (!["approve", "reject"].includes(action)) {
@@ -32,7 +21,7 @@ export async function PUT(request) {
     }
 
     // Find user by ID and update status
-    const user = await User.findById({_id:userId});
+    const user = await User.findOne({_id:userId});
     if (!user) {
       return NextResponse.json(
         { message: "User not found" },

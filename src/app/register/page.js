@@ -88,7 +88,8 @@ const Page = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccessMessage(`Welcome  ${data.user.name} !!! ${data.message}  `);
+        setSuccessMessage( `Welcome ${data.user.name}! We'll get back to you when admin approved your account`
+        );
         setFormData({ name: "", email: "", password: "" });
       } else {
         setErrors({ ...errors, general: data.message || "Something went wrong." });

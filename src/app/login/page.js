@@ -49,20 +49,32 @@ const Page = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
-        setSuccessMessage(`Welcome ${data.user.name}! ${data.message}`);
-        setFormData({ email: "", password: "" });
-        
-      } else {
-        setError(data.message || "Something went wrong.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setError("Your credentials are invalid");
-    } finally {
-      setIsSubmitting(false);
+  if (response.ok) {
+    if (data.isAdmin) {
+      // Open the admin dashboard in a new tab or page
+      window.open("/dashboard", "_blank");
     }
+     else {
+      setSuccessMessage(`Welcome ${data.user.name}! ${data.message}`);
+      setFormData({ email: "", password: "" });
+
+      setTimeout(() => {
+        router.replace("/vendor-dashboard");
+        
+      }, 1000);
+    }
+  } else {
+    setError(data.message || "Something went wrong.");
+  }
+
+} catch (error) {
+  console.error("Error:", error);
+  setError("Your credentials are invalid");
+} finally {
+  setIsSubmitting(false);
+}
   };
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
